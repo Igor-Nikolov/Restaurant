@@ -13,6 +13,7 @@ public class MyService extends Service {
     @Override
     public IBinder onBind(Intent arg0) {
         return null;
+		//asdadasdasda
     }
 
     @Override
