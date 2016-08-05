@@ -118,9 +118,11 @@ public class RestaurantHome extends Activity {
                 startActivity(intent);
                 return true;
 
+        /*     case R.id.item2:
                 Intent intent1 = new Intent(getApplicationContext(),RestaurantHome.class);
                 startActivity(intent1);
                 return true;
+        */
             default:
                 return super.onOptionsItemSelected(item);
         }
