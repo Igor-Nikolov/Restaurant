@@ -16,6 +16,8 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+        <activity android:name=".DisplayAdimin"/>
+        <activity android:name=".RestaurantHome"/>
 
         <service android:name=".Service.MyService" />
 

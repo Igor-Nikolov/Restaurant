@@ -39,7 +39,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:id="@+id/button2"
-        android:text="Start Services"
+        android:text="Menu"
         android:onClick="startService"
         android:layout_below="@+id/imageButton"
         android:layout_centerHorizontal="true" />
@@ -47,7 +47,7 @@
     <Button
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Stop Services"
+        android:text="Admin"
         android:id="@+id/button"
         android:onClick="stopService"
         android:layout_below="@+id/button2"
