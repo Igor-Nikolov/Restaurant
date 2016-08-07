@@ -1,10 +1,12 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools" tools:context=".RestaurantMain">
+
     <item android:id="@+id/action_settings" android:title="@string/action_settings"
         android:orderInCategory="100" android:showAsAction="never" />
 
     <item android:id="@+id/item1"
         android:icon="@drawable/apolonia"
+        android:showAsAction="never"
         android:title="@string/Add_New" >
     </item>
     <!--<item android:id="@+id/item2"

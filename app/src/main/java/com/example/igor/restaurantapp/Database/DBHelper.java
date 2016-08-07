@@ -3,15 +3,16 @@ package com.example.igor.restaurantapp.Database;
 /**
  * Created by Igor on 04-Aug-16.
  */
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.Hashtable;
+
 import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
 import android.database.DatabaseUtils;
-import android.database.sqlite.SQLiteOpenHelper;
 import android.database.sqlite.SQLiteDatabase;
+import android.database.sqlite.SQLiteOpenHelper;
+
+import java.util.ArrayList;
+import java.util.HashMap;
 
 public class DBHelper extends SQLiteOpenHelper {
 
@@ -46,7 +47,7 @@ public class DBHelper extends SQLiteOpenHelper {
         onCreate(db);
     }
 
-    public boolean insertContact  (String name, String phone, String email, String street,String place)
+    public boolean insertContact  (String name, String phone, String email, String street, String place)
     {
         SQLiteDatabase db = this.getWritableDatabase();
         ContentValues contentValues = new ContentValues();
@@ -71,7 +72,7 @@ public class DBHelper extends SQLiteOpenHelper {
         return numRows;
     }
 
-    public boolean updateContact (Integer id, String name, String phone, String email, String street,String place)
+    public boolean updateContact (Integer id, String name, String phone, String email, String street, String place)
     {
         SQLiteDatabase db = this.getWritableDatabase();
         ContentValues contentValues = new ContentValues();

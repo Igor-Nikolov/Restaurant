@@ -1,28 +1,16 @@
 package com.example.igor.restaurantapp;
 
-        import android.app.Activity;
-        import android.content.Intent;
-        import android.os.Bundle;
-        import android.util.Log;
-        import android.view.Menu;
-        import android.view.MenuItem;
-        import android.view.View;
+import android.app.Activity;
+import android.content.Intent;
+import android.os.Bundle;
+import android.util.Log;
+import android.view.KeyEvent;
+import android.view.Menu;
+import android.view.MenuItem;
+import android.view.View;
+import android.widget.Button;
 
-        import com.example.igor.restaurantapp.Database.DBHelper;
-        import com.example.igor.restaurantapp.Service.MyService;
-
-
-        import java.util.ArrayList;
-        import java.util.List;
-        import android.widget.AdapterView;
-        import android.widget.ArrayAdapter;
-        import android.widget.AdapterView.OnItemClickListener;
-        import android.widget.Button;
-        import android.widget.ListView;
-        import android.view.KeyEvent;
-        import android.view.Menu;
-        import android.view.MenuItem;
-        import android.view.View;
+import com.example.igor.restaurantapp.Service.MyService;
 
 public class RestaurantMain extends Activity {
     String msg = "Android : ";
@@ -108,7 +96,6 @@ public class RestaurantMain extends Activity {
                 Intent intent1 = new Intent(getApplicationContext(),RestaurantHome.class);
                 startActivity(intent1);
                 return true;
-
          */
             default:
                 return super.onOptionsItemSelected(item);
@@ -134,5 +121,3 @@ public class RestaurantMain extends Activity {
 
 
 }
-
-
