@@ -13,7 +13,7 @@
         android:layout_alignParentLeft="true"
         android:layout_marginRight="8dp" />
 
-    <!-- Movie Title -->
+    <!-- RestorantMenu Title -->
     <TextView
         android:id="@+id/title"
         android:layout_width="wrap_content"
@@ -51,7 +51,7 @@
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
         android:layout_alignParentRight="true"
-        android:textColor="@color/year"
-        android:textSize="@dimen/year" />
+        android:textColor="@color/time"
+        android:textSize="@dimen/time" />
 
 </RelativeLayout>

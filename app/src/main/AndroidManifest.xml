@@ -28,6 +28,8 @@
         <activity android:name=".DisplayAdimin"/>
         <activity android:name=".RestaurantHome"/>
         <activity android:name=".RestaurantMain"/>
+        <activity android:name=".MeniItemDetail"/>
+
         <service android:name=".Service.MyService" />
     </application>
 

@@ -14,31 +14,31 @@ import android.widget.TextView;
 
 import com.android.volley.toolbox.ImageLoader;
 import com.android.volley.toolbox.NetworkImageView;
+import com.example.igor.restaurantapp.Model.RestorantMenu;
 import com.example.igor.restaurantapp.R;
 import com.example.igor.restaurantapp.App.AppController;
-import com.example.igor.restaurantapp.Model.Movie;
 
 import java.util.List;
 
 public class CustomListAdapter extends BaseAdapter {
     private Activity activity;
     private LayoutInflater inflater;
-    private List<Movie> movieItems;
+    private List<RestorantMenu> restorantMenuItems;
     ImageLoader imageLoader = AppController.getInstance().getImageLoader();
 
-    public CustomListAdapter(Activity activity, List<Movie> movieItems) {
+    public CustomListAdapter(Activity activity, List<RestorantMenu> restorantMenuItems) {
         this.activity = activity;
-        this.movieItems = movieItems;
+        this.restorantMenuItems = restorantMenuItems;
     }
 
     @Override
     public int getCount() {
-        return movieItems.size();
+        return restorantMenuItems.size();
     }
 
     @Override
     public Object getItem(int location) {
-        return movieItems.get(location);
+        return restorantMenuItems.get(location);
     }
 
     @Override
@@ -62,10 +62,10 @@ public class CustomListAdapter extends BaseAdapter {
         TextView title = (TextView) convertView.findViewById(R.id.title);
         TextView rating = (TextView) convertView.findViewById(R.id.rating);
         TextView genre = (TextView) convertView.findViewById(R.id.genre);
-        TextView year = (TextView) convertView.findViewById(R.id.releaseYear);
+        TextView time = (TextView) convertView.findViewById(R.id.releaseYear);
 
         // getting movie data for the row
-        Movie m = movieItems.get(position);
+        RestorantMenu m = restorantMenuItems.get(position);
 
         // thumbnail image
         thumbNail.setImageUrl(m.getThumbnailUrl(), imageLoader);
@@ -85,8 +85,8 @@ public class CustomListAdapter extends BaseAdapter {
                 genreStr.length() - 2) : genreStr;
         genre.setText(genreStr);
 
-        // release year
-        year.setText(String.valueOf(m.getYear()));
+        // release time
+        time.setText(String.valueOf(m.getTime()));
 
         return convertView;
     }

@@ -10,14 +10,14 @@ import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
-import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.AdapterView;
 import android.widget.Button;
 
 import com.example.igor.restaurantapp.Adapter.CustomListAdapter;
 import com.example.igor.restaurantapp.App.AppController;
-import com.example.igor.restaurantapp.Model.Movie;
+import com.example.igor.restaurantapp.Model.RestorantMenu;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -42,9 +42,9 @@ public class MainActivity extends AppCompatActivity
     private static final String TAG = MainActivity.class.getSimpleName();
 
     // Movies json url
-    private static final String url = "https://api.myjson.com/bins/2w0px";
+    private static final String url = "https://api.myjson.com/bins/43fzp";
     private ProgressDialog pDialog;
-    private List<Movie> movieList = new ArrayList<Movie>();
+    private List<RestorantMenu> restorantMenuList = new ArrayList<RestorantMenu>();
     private ListView listView;
     private CustomListAdapter adapter;
 
@@ -86,8 +86,19 @@ public class MainActivity extends AppCompatActivity
         });
 
         listView = (ListView) findViewById(R.id.list);
-        adapter = new CustomListAdapter(this, movieList);
+        adapter = new CustomListAdapter(this, restorantMenuList);
         listView.setAdapter(adapter);
+
+        listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+               RestorantMenu meni = restorantMenuList.get(position);
+
+                Intent i = new Intent(getApplicationContext(),MeniItemDetail.class);
+                i.putExtra("meniObj", meni);
+                startActivity(i);
+            }
+        });
 
         pDialog = new ProgressDialog(this);
         // Showing progress dialog before making http request
@@ -111,12 +122,13 @@ public class MainActivity extends AppCompatActivity
                             try {
 
                                 JSONObject obj = response.getJSONObject(i);
-                                Movie movie = new Movie();
-                                movie.setTitle(obj.getString("title"));
-                                movie.setThumbnailUrl(obj.getString("image"));
-                                movie.setRating(((Number) obj.get("rating"))
+                                RestorantMenu restorantMenu = new RestorantMenu();
+                                restorantMenu.setId(obj.getLong("id"));
+                                restorantMenu.setTitle(obj.getString("title"));
+                                restorantMenu.setThumbnailUrl(obj.getString("image"));
+                                restorantMenu.setRating(((Number) obj.get("rating"))
                                         .doubleValue());
-                                movie.setYear(obj.getString("releaseYear"));
+                                restorantMenu.setTime(obj.getString("releaseYear")+"$");
 
                                 // Genre is json array
                                 JSONArray genreArry = obj.getJSONArray("genre");
@@ -124,10 +136,10 @@ public class MainActivity extends AppCompatActivity
                                 for (int j = 0; j < genreArry.length(); j++) {
                                     genre.add((String) genreArry.get(j));
                                 }
-                                movie.setGenre(genre);
+                                restorantMenu.setGenre(genre);
 
-                                // adding movie to movies array
-                                movieList.add(movie);
+                                // adding restorantMenu to menu array
+                                restorantMenuList.add(restorantMenu);
 
                             } catch (JSONException e) {
                                 e.printStackTrace();
@@ -138,6 +150,7 @@ public class MainActivity extends AppCompatActivity
                         // notifying list adapter about data changes
                         // so that it renders the list view with updated data
                         adapter.notifyDataSetChanged();
+
                     }
                 }, new Response.ErrorListener() {
             @Override
@@ -150,6 +163,7 @@ public class MainActivity extends AppCompatActivity
 
         // Adding request to request queue
         AppController.getInstance().addToRequestQueue(movieReq);
+
     }
     private void hidePDialog() {
         if (pDialog != null) {
@@ -169,7 +183,7 @@ public class MainActivity extends AppCompatActivity
     }
 
     @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
+    public boolean onCreateOptionsMenu(android.view.Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
         getMenuInflater().inflate(R.menu.activity_main_drawer, menu);
 
