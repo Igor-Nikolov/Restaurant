@@ -10,6 +10,7 @@ import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.view.KeyEvent;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
@@ -42,7 +43,7 @@ public class MainActivity extends AppCompatActivity
     private static final String TAG = MainActivity.class.getSimpleName();
 
     // Movies json url
-    private static final String url = "https://api.myjson.com/bins/43fzp";
+    private static final String url = "https://api.myjson.com/bins/193qd";
     private ProgressDialog pDialog;
     private List<RestorantMenu> restorantMenuList = new ArrayList<RestorantMenu>();
     private ListView listView;
@@ -96,7 +97,7 @@ public class MainActivity extends AppCompatActivity
 
                 Intent i = new Intent(getApplicationContext(),MeniItemDetail.class);
                 i.putExtra("meniObj", meni);
-                startActivity(i);
+                MainActivity.this.startActivityForResult(i,1);
             }
         });
 
@@ -128,7 +129,7 @@ public class MainActivity extends AppCompatActivity
                                 restorantMenu.setThumbnailUrl(obj.getString("image"));
                                 restorantMenu.setRating(((Number) obj.get("rating"))
                                         .doubleValue());
-                                restorantMenu.setTime(obj.getString("releaseYear")+"$");
+                                restorantMenu.setPrice(obj.getString("price")+" $");
 
                                 // Genre is json array
                                 JSONArray genreArry = obj.getJSONArray("genre");
@@ -229,4 +230,11 @@ public class MainActivity extends AppCompatActivity
         drawer.closeDrawer(GravityCompat.START);
         return true;
     }
+    public boolean onKeyDown(int keycode, KeyEvent event) {
+        if (keycode == KeyEvent.KEYCODE_BACK) {
+            moveTaskToBack(true);
+        }
+        return super.onKeyDown(keycode, event);
+    }
+
 }

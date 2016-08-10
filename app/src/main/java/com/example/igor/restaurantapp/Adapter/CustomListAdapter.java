@@ -86,7 +86,7 @@ public class CustomListAdapter extends BaseAdapter {
         genre.setText(genreStr);
 
         // release time
-        time.setText(String.valueOf(m.getTime()));
+        time.setText(String.valueOf(m.getPrice()));
 
         return convertView;
     }

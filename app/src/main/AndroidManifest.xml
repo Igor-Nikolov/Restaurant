@@ -28,7 +28,9 @@
         <activity android:name=".DisplayAdimin"/>
         <activity android:name=".RestaurantHome"/>
         <activity android:name=".RestaurantMain"/>
-        <activity android:name=".MeniItemDetail"/>
+        <activity android:name=".MeniItemDetail"
+            android:theme="@style/AppTheme"
+            />
 
         <service android:name=".Service.MyService" />
     </application>

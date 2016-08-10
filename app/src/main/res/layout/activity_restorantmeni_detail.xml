@@ -49,27 +49,31 @@
                     android:layout_width="201dp"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center"
-                    android:textSize="20dp" />
+                    android:textSize="20dp"
+                    android:textAlignment="center"/>
                 <TextView
                     android:id="@+id/meni_time"
                     android:text="Title"
                     android:layout_width="190dp"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center"
-                    android:textSize="10dp" />
-
+                    android:textSize="20dp"
+                    android:textAlignment="center" />
 
 
                 <Button
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="Add to favorite"
-                    android:id="@+id/add_favorite" />
+                    android:text="Add to Order"
+                    android:id="@+id/add_to_order" />
+
                 <Button
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:layout_toRightOf="@id/add_to_order"
                     android:text="Remove favorite"
-                    android:id="@+id/remove_favorite" />
+                    android:id="@+id/remove_favorite"
+                    android:layout_gravity="right" />
 
                 <TextView
                     android:layout_width="match_parent"

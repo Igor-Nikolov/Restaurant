@@ -12,7 +12,7 @@ public class RestorantMenu implements Parcelable {
     private Long id;
     private String title;
     private String thumbnailUrl;
-    private String time;
+    private String price;
     private double rating;
     private ArrayList<String> genre;
 
@@ -21,12 +21,12 @@ public class RestorantMenu implements Parcelable {
 
 
 
-    public RestorantMenu(Long id, String name, String thumbnailUrl, String time, double rating,
+    public RestorantMenu(Long id, String name, String thumbnailUrl, String price, double rating,
                          ArrayList<String> genre) {
         this.id=id;
         this.title = name;
         this.thumbnailUrl = thumbnailUrl;
-        this.time = time;
+        this.price = price;
         this.rating = rating;
         this.genre = genre;
     }
@@ -51,11 +51,11 @@ public class RestorantMenu implements Parcelable {
         this.thumbnailUrl = thumbnailUrl;
     }
 
-    public String getTime() {
-        return time;
+    public String getPrice() {
+        return price;
     }
 
-    public void setTime(String time) {this.time = time;}
+    public void setPrice(String price) {this.price = price;}
 
     public double getRating() {
         return rating;
@@ -78,7 +78,7 @@ public class RestorantMenu implements Parcelable {
         id = in.readByte() == 0x00 ? null : in.readLong();
         title = in.readString();
         thumbnailUrl = in.readString();
-        time = in.readString();
+        price = in.readString();
         rating = in.readDouble();
         if (in.readByte() == 0x01) {
             genre = new ArrayList<String>();
@@ -103,7 +103,7 @@ public class RestorantMenu implements Parcelable {
         }
         dest.writeString(title);
         dest.writeString(thumbnailUrl);
-        dest.writeString(time);
+        dest.writeString(price);
         dest.writeDouble(rating);
         if (genre == null) {
             dest.writeByte((byte) (0x00));

@@ -3,18 +3,18 @@ package com.example.igor.restaurantapp;
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
-import android.util.Log;
+import android.support.design.widget.NavigationView;
+import android.support.v4.view.GravityCompat;
+import android.support.v4.widget.DrawerLayout;
+import android.support.v7.app.ActionBar;
+import android.support.v7.app.AppCompatActivity;
 import android.view.KeyEvent;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import com.android.volley.toolbox.ImageLoader;
-import com.android.volley.toolbox.NetworkImageView;
-import com.example.igor.restaurantapp.App.AppController;
 import com.example.igor.restaurantapp.Model.RestorantMenu;
 import com.example.igor.restaurantapp.Service.MyService;
 import com.squareup.picasso.Picasso;
@@ -22,13 +22,13 @@ import com.squareup.picasso.Picasso;
 /**
  * Created by Igor on 08-Aug-16.
  */
-public class MeniItemDetail extends Activity {
+public class MeniItemDetail extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
     RestorantMenu meniObj;
 
     ImageView meniImg;
     TextView meniName;
     TextView mienDesctiption;
-    TextView meniTime;
+    TextView meniPrice;
     private Picasso imageLoader;
 
 
@@ -37,6 +37,8 @@ public class MeniItemDetail extends Activity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_restorantmeni_detail);
+        ActionBar actionBar =  getSupportActionBar();
+        actionBar.setDisplayHomeAsUpEnabled(true);
         doInject();
 
     }
@@ -50,8 +52,8 @@ public class MeniItemDetail extends Activity {
         meniImg = (ImageView) findViewById(R.id.meniImg);
         meniName = (TextView) findViewById(R.id.meni_name);
         imageLoader = Picasso.with(MeniItemDetail.this);
+        meniPrice = (TextView) findViewById(R.id.meni_time);
         //bookDesctiption = (TextView) findViewById(R.id.book_description);
-        meniTime = (TextView) findViewById(R.id.meni_time);
        // addFavorite = (Button) findViewById(R.id.add_favorite);
        // removeFavorite = (Button) findViewById(R.id.remove_favorite);
        // favBookTask = new FavBookTask(MeniItemDetail.this);
@@ -68,9 +70,9 @@ public class MeniItemDetail extends Activity {
                 .fit()
                 .into(meniImg);
         meniName.setText(meniObj.getTitle());
-       // bookDesctiption.setText(bookObj.getDescription());
-        meniTime.setText(meniObj.getTime().toString());
+        meniPrice.setText("Price: "+meniObj.getPrice().toString());
         setTitle(meniObj.getTitle());
+        // bookDesctiption.setText(bookObj.getDescription());
       //  addFavorite.setVisibility(View.GONE);
      //   removeFavorite.setVisibility(View.GONE);
        // setFavBookBtn();
@@ -111,37 +113,36 @@ public class MeniItemDetail extends Activity {
 
     }
 
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
+    public boolean onCreateOptionsMenu(android.view.Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
-        getMenuInflater().inflate(R.menu.menu_restaurant_main, menu);
+        getMenuInflater().inflate(R.menu.activity_itemdetail_menu, menu);
+
         return true;
     }
 
     @Override
-    public boolean onOptionsItemSelected(MenuItem item){
-        super.onOptionsItemSelected(item);
+    public boolean onOptionsItemSelected(MenuItem item) {
+        this.finish();
+        return true;
+    }
 
-        switch(item.getItemId())
-        {
-            case R.id.item1:
-                Bundle dataBundle = new Bundle();
-                dataBundle.putInt("id", 0);
+    @SuppressWarnings("StatementWithEmptyBody")
+    @Override
+    public boolean onNavigationItemSelected(MenuItem item) {
+        // Handle navigation view item clicks here.
+        int id = item.getItemId();
 
-                Intent intent = new Intent(getApplicationContext(),DisplayAdimin.class);
-                intent.putExtras(dataBundle);
+        if (id == R.id.nav_camera) {
+            // Handle the camera action
+        } else if (id == R.id.nav_share) {
 
-                startActivity(intent);
-                return true;
+        } else if (id == R.id.nav_send) {
 
-         /*   case R.id.item2:
-                Intent intent1 = new Intent(getApplicationContext(),RestaurantHome.class);
-                startActivity(intent1);
-                return true;
-         */
-            default:
-                return super.onOptionsItemSelected(item);
         }
+
+        DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
+        drawer.closeDrawer(GravityCompat.START);
+        return true;
     }
 
     // Method to start the service
@@ -160,7 +161,10 @@ public class MeniItemDetail extends Activity {
         }
         return super.onKeyDown(keycode, event);
     }
-
-
+    @Override
+    public void onBackPressed() {
+        //super.onBackPressed();
+        MeniItemDetail.this.finish();
+    }
 
 }
