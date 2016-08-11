@@ -12,6 +12,7 @@ import android.view.KeyEvent;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -29,6 +30,7 @@ public class MeniItemDetail extends AppCompatActivity implements NavigationView.
     TextView meniName;
     TextView mienDesctiption;
     TextView meniPrice;
+    Button add_to_order;
     private Picasso imageLoader;
 
 
@@ -40,6 +42,7 @@ public class MeniItemDetail extends AppCompatActivity implements NavigationView.
         ActionBar actionBar =  getSupportActionBar();
         actionBar.setDisplayHomeAsUpEnabled(true);
         doInject();
+
 
     }
 
@@ -53,6 +56,7 @@ public class MeniItemDetail extends AppCompatActivity implements NavigationView.
         meniName = (TextView) findViewById(R.id.meni_name);
         imageLoader = Picasso.with(MeniItemDetail.this);
         meniPrice = (TextView) findViewById(R.id.meni_time);
+        add_to_order=(Button) findViewById(R.id.add_to_order);
         //bookDesctiption = (TextView) findViewById(R.id.book_description);
        // addFavorite = (Button) findViewById(R.id.add_favorite);
        // removeFavorite = (Button) findViewById(R.id.remove_favorite);
@@ -76,6 +80,15 @@ public class MeniItemDetail extends AppCompatActivity implements NavigationView.
       //  addFavorite.setVisibility(View.GONE);
      //   removeFavorite.setVisibility(View.GONE);
        // setFavBookBtn();
+        add_to_order.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+                Intent i = new Intent(getApplicationContext(),MyOrder.class);
+                i.putExtra("meniObj", meniObj);
+                startActivity(i);
+            }
+        });
 
     }
     /** Called when the activity is about to become visible. */
@@ -145,15 +158,6 @@ public class MeniItemDetail extends AppCompatActivity implements NavigationView.
         return true;
     }
 
-    // Method to start the service
-    public void startService(View view) {
-        startService(new Intent(getBaseContext(), MyService.class));
-    }
-
-    // Method to stop the service
-    public void stopService(View view) {
-        stopService(new Intent(getBaseContext(), MyService.class));
-    }
 
     public boolean onKeyDown(int keycode, KeyEvent event) {
         if (keycode == KeyEvent.KEYCODE_BACK) {
