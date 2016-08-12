@@ -56,7 +56,7 @@ public class MainActivity extends AppCompatActivity
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
-        FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
+        FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.deleteMyOrderList);
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -87,7 +87,7 @@ public class MainActivity extends AppCompatActivity
         });
 
         listView = (ListView) findViewById(R.id.list);
-        adapter = new CustomListAdapter(this, restorantMenuList);
+        adapter = new CustomListAdapter(this, restorantMenuList,false);
         listView.setAdapter(adapter);
 
         listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
@@ -129,7 +129,7 @@ public class MainActivity extends AppCompatActivity
                                 restorantMenu.setThumbnailUrl(obj.getString("image"));
                                 restorantMenu.setRating(((Number) obj.get("rating"))
                                         .doubleValue());
-                                restorantMenu.setPrice(obj.getString("price")+" $");
+                                restorantMenu.setPrice(obj.getString("price"));
 
                                 // Genre is json array
                                 JSONArray genreArry = obj.getJSONArray("genre");
@@ -186,7 +186,7 @@ public class MainActivity extends AppCompatActivity
     @Override
     public boolean onCreateOptionsMenu(android.view.Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
-        getMenuInflater().inflate(R.menu.activity_main_drawer, menu);
+        getMenuInflater().inflate(R.menu.activity_itemdetail_menu, menu);
 
         return true;
     }
@@ -199,8 +199,12 @@ public class MainActivity extends AppCompatActivity
         int id = item.getItemId();
 
         //noinspection SimplifiableIfStatement
-        if (id == R.id.action_settings) {
-            return true;
+        if (id == R.id.home) {
+            Intent i = new Intent(getApplicationContext(),MainActivity.class);
+            startActivity(i);
+        }else if (id == R.id.myOrderMenuItem) {
+            Intent i = new Intent(getApplicationContext(),MyOrder.class);
+            startActivity(i);
         }
 
         return super.onOptionsItemSelected(item);

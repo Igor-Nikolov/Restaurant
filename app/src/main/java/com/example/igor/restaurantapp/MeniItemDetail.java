@@ -34,12 +34,14 @@ public class MeniItemDetail extends AppCompatActivity implements NavigationView.
     private Picasso imageLoader;
 
 
-    /** Called when the activity is first created. */
+    /**
+     * Called when the activity is first created.
+     */
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_restorantmeni_detail);
-        ActionBar actionBar =  getSupportActionBar();
+        ActionBar actionBar = getSupportActionBar();
         actionBar.setDisplayHomeAsUpEnabled(true);
         doInject();
 
@@ -56,11 +58,11 @@ public class MeniItemDetail extends AppCompatActivity implements NavigationView.
         meniName = (TextView) findViewById(R.id.meni_name);
         imageLoader = Picasso.with(MeniItemDetail.this);
         meniPrice = (TextView) findViewById(R.id.meni_time);
-        add_to_order=(Button) findViewById(R.id.add_to_order);
+        add_to_order = (Button) findViewById(R.id.add_to_order);
         //bookDesctiption = (TextView) findViewById(R.id.book_description);
-       // addFavorite = (Button) findViewById(R.id.add_favorite);
-       // removeFavorite = (Button) findViewById(R.id.remove_favorite);
-       // favBookTask = new FavBookTask(MeniItemDetail.this);
+        // addFavorite = (Button) findViewById(R.id.add_favorite);
+        // removeFavorite = (Button) findViewById(R.id.remove_favorite);
+        // favBookTask = new FavBookTask(MeniItemDetail.this);
         //getFavBookStateTask = new GetFavBookStateTask(MeniItemDetail.this);
 
         //imageLoader.load(getResources().getString(R.string.book_image_real) + bookObj.getId()).
@@ -74,52 +76,63 @@ public class MeniItemDetail extends AppCompatActivity implements NavigationView.
                 .fit()
                 .into(meniImg);
         meniName.setText(meniObj.getTitle());
-        meniPrice.setText("Price: "+meniObj.getPrice().toString());
+        meniPrice.setText("Price: " + meniObj.getPrice().toString());
         setTitle(meniObj.getTitle());
         // bookDesctiption.setText(bookObj.getDescription());
-      //  addFavorite.setVisibility(View.GONE);
-     //   removeFavorite.setVisibility(View.GONE);
-       // setFavBookBtn();
+        //  addFavorite.setVisibility(View.GONE);
+        //   removeFavorite.setVisibility(View.GONE);
+        // setFavBookBtn();
         add_to_order.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
 
-                Intent i = new Intent(getApplicationContext(),MyOrder.class);
+                Intent i = new Intent(getApplicationContext(), MyOrder.class);
                 i.putExtra("meniObj", meniObj);
                 startActivity(i);
             }
         });
 
     }
-    /** Called when the activity is about to become visible. */
+
+    /**
+     * Called when the activity is about to become visible.
+     */
     @Override
     protected void onStart() {
         super.onStart();
 
     }
 
-    /** Called when the activity has become visible. */
+    /**
+     * Called when the activity has become visible.
+     */
     @Override
     protected void onResume() {
         super.onResume();
 
     }
 
-    /** Called when another activity is taking focus. */
+    /**
+     * Called when another activity is taking focus.
+     */
     @Override
     protected void onPause() {
         super.onPause();
 
     }
 
-    /** Called when the activity is no longer visible. */
+    /**
+     * Called when the activity is no longer visible.
+     */
     @Override
     protected void onStop() {
         super.onStop();
 
     }
 
-    /** Called just before the activity is destroyed. */
+    /**
+     * Called just before the activity is destroyed.
+     */
     @Override
     public void onDestroy() {
         super.onDestroy();
@@ -135,9 +148,30 @@ public class MeniItemDetail extends AppCompatActivity implements NavigationView.
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        this.finish();
-        return true;
+        int id = item.getItemId();
+
+        if (id == R.id.home) {
+            Intent i = new Intent(getApplicationContext(),MainActivity.class);
+            startActivity(i);
+        }else if (id == R.id.myOrderMenuItem) {
+            Intent i = new Intent(getApplicationContext(),MyOrder.class);
+            startActivity(i);
+        }
+        else if (id == R.id.nav_share) {
+
+        }
+        else if (id == R.id.nav_send) {
+
+        }
+        else {
+            this.finish();
+            return true;
+        }
+        return super.onOptionsItemSelected(item);
     }
+
+
+
 
     @SuppressWarnings("StatementWithEmptyBody")
     @Override

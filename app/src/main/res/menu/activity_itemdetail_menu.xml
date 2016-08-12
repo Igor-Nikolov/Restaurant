@@ -3,7 +3,7 @@
 
     <group android:checkableBehavior="single">
         <item
-            android:id="@+id/nav_camera"
+            android:id="@+id/myOrderMenuItem"
             android:icon="@drawable/ic_menu_gallery"
             android:title="myOrder" />
         <item
@@ -13,9 +13,7 @@
 
     </group>
 
-    <item android:title="Communicate">
-        <menu>
-            <item
+   <!--     <item
                 android:id="@+id/nav_share"
                 android:icon="@drawable/ic_menu_share"
                 android:title="Call Waiter" />
@@ -25,5 +23,5 @@
                 android:title="Call Bill" />
         </menu>
     </item>
-
+        -->
 </menu>

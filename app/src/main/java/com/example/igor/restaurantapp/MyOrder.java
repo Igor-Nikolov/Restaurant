@@ -3,19 +3,15 @@ package com.example.igor.restaurantapp;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
-import android.support.design.widget.Snackbar;
-import android.support.v4.view.GravityCompat;
-import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
-import android.support.v7.widget.Toolbar;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.ArrayAdapter;
 import android.widget.ListView;
 import android.widget.TextView;
 
 import com.example.igor.restaurantapp.Adapter.CustomListAdapter;
+import com.example.igor.restaurantapp.Database.MyOrderDAO;
 import com.example.igor.restaurantapp.Model.RestorantMenu;
 
 import java.util.ArrayList;
@@ -42,28 +38,56 @@ public class MyOrder extends AppCompatActivity {
         ActionBar actionBar =  getSupportActionBar();
         actionBar.setDisplayHomeAsUpEnabled(true);
 
-        FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
-        fab.setOnClickListener(new View.OnClickListener() {
+        FloatingActionButton deleteMyOrderList = (FloatingActionButton) findViewById(R.id.deleteMyOrderList);
+        deleteMyOrderList.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
-                        .setAction("Action", null).show();
+              //  Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
+               //         .setAction("Action", null).show();
+                MyOrderDAO myDatabase = new MyOrderDAO(MyOrder.this);
+                myDatabase.open();
+                myDatabase.deleteAll();
+                adapter.clear();
+                myDatabase.close();
             }
         });
         Intent i=getIntent();
         meniObj = i.getParcelableExtra("meniObj");
-        restorantMenuList.add(meniObj);
+
+        MyOrderDAO myDatabase = new MyOrderDAO(this);
+        myDatabase.open();
+       // myDatabase.deleteAll(); za delete na listata i gore dvata reda
+      //  myDatabase.close();
+        List<RestorantMenu> result = myDatabase.getAllItems();
+        if(meniObj != null){
+            boolean flag = true;
+
+            for(RestorantMenu meni : result){
+                if(meni.getId() == meniObj.getId())
+                    flag=false;
+            }
+
+            if(flag){
+                result.add(meniObj);
+                myDatabase.insert(meniObj);
+            }
+        }
+
+        myDatabase.close();
+
+        //restorantMenuList.add(meniObj);
         listViewMyOrder = (ListView) findViewById(R.id.myOrderList);
-        adapter = new CustomListAdapter(this, restorantMenuList);
+        adapter = new CustomListAdapter(this, result,true);
         listViewMyOrder.setAdapter(adapter);
 
         sumaprice=0;
-        for(int j = 0; j < adapter.getCount() ; j++) {
-            price =Integer.parseInt(String.valueOf(meniObj.getPrice().charAt(0)));
-            sumaprice +=price;
+        for(int j = 0; j < result.size() ; j++) {
+            price = Integer.parseInt(result.get(j).getPrice());
+            sumaprice += price;
         }
+
         textViewSumaPrice=(TextView) findViewById(R.id.sumaprice);
-        textViewSumaPrice.setText("SumaPrice: "+Integer.toString(sumaprice));
+        textViewSumaPrice.setText("SumaPrice: "+Integer.toString(sumaprice) + "$");
 
     }
 
@@ -117,7 +141,17 @@ public class MyOrder extends AppCompatActivity {
         if (id == R.id.home) {
             Intent i = new Intent(getApplicationContext(),MainActivity.class);
             startActivity(i);
-        }else
+        }else if (id == R.id.myOrderMenuItem) {
+            Intent i = new Intent(getApplicationContext(),MyOrder.class);
+            startActivity(i);
+        }
+        else if (id == R.id.nav_share) {
+
+        }
+        else if (id == R.id.nav_send) {
+
+        }
+        else
         {
             this.finish();
             return true;
