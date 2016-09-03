@@ -1,6 +1,9 @@
 package com.example.igor.restaurantapp;
 
+import android.content.Context;
 import android.content.Intent;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.NavigationView;
@@ -19,6 +22,7 @@ import android.widget.Button;
 import com.example.igor.restaurantapp.Adapter.CustomListAdapter;
 import com.example.igor.restaurantapp.App.AppController;
 import com.example.igor.restaurantapp.Model.RestorantMenu;
+import com.example.igor.restaurantapp.Database.MyMenuItemsDAO;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -30,6 +34,7 @@ import org.json.JSONObject;
 import android.app.ProgressDialog;
 import android.util.Log;
 import android.widget.ListView;
+import android.widget.Toast;
 
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
@@ -93,7 +98,7 @@ public class MainActivity extends AppCompatActivity
         listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-               RestorantMenu meni = restorantMenuList.get(position);
+                RestorantMenu meni = restorantMenuList.get(position);
 
                 Intent i = new Intent(getApplicationContext(),MeniItemDetail.class);
                 i.putExtra("meniObj", meni);
@@ -106,64 +111,86 @@ public class MainActivity extends AppCompatActivity
         pDialog.setMessage("Loading...");
         pDialog.show();
 
-        // changing action bar color
-        //   getActionBar().setBackgroundDrawable(
-        //           new ColorDrawable(Color.parseColor("#1b1b1b")));
+        ConnectivityManager cm = (ConnectivityManager) this.getSystemService(Context.CONNECTIVITY_SERVICE);
+        NetworkInfo netInfo = cm.getActiveNetworkInfo();
 
-        // Creating volley request obj
-        JsonArrayRequest movieReq = new JsonArrayRequest(url,
-                new Response.Listener<JSONArray>() {
-                    @Override
-                    public void onResponse(JSONArray response) {
-                        Log.d(TAG, response.toString());
-                        hidePDialog();
+        //AKO IMA INTERNET DA SE ZEMAT OD WEB
+        if (netInfo != null && netInfo.isConnected()) {
 
-                        // Parsing json
-                        for (int i = 0; i < response.length(); i++) {
-                            try {
+            final MyMenuItemsDAO myDatabase = new MyMenuItemsDAO(MainActivity.this);
+            myDatabase.open();
+            myDatabase.deleteAll();
 
-                                JSONObject obj = response.getJSONObject(i);
-                                RestorantMenu restorantMenu = new RestorantMenu();
-                                restorantMenu.setId(obj.getLong("id"));
-                                restorantMenu.setTitle(obj.getString("title"));
-                                restorantMenu.setThumbnailUrl(obj.getString("image"));
-                                restorantMenu.setRating(((Number) obj.get("rating"))
-                                        .doubleValue());
-                                restorantMenu.setPrice(obj.getString("price"));
+            // Creating volley request obj
+            JsonArrayRequest movieReq = new JsonArrayRequest(url,
+                    new Response.Listener<JSONArray>() {
+                        @Override
+                        public void onResponse(JSONArray response) {
+                            Log.d(TAG, response.toString());
+                            hidePDialog();
 
-                                // Genre is json array
-                                JSONArray genreArry = obj.getJSONArray("genre");
-                                ArrayList<String> genre = new ArrayList<String>();
-                                for (int j = 0; j < genreArry.length(); j++) {
-                                    genre.add((String) genreArry.get(j));
+                            // Parsing json
+                            for (int i = 0; i < response.length(); i++) {
+                                try {
+
+                                    JSONObject obj = response.getJSONObject(i);
+                                    RestorantMenu restorantMenu = new RestorantMenu();
+                                    restorantMenu.setId(obj.getLong("id"));
+                                    restorantMenu.setTitle(obj.getString("title"));
+                                    restorantMenu.setThumbnailUrl(obj.getString("image"));
+                                    restorantMenu.setRating(((Number) obj.get("rating"))
+                                            .doubleValue());
+                                    restorantMenu.setPrice(obj.getString("price"));
+
+                                    // Genre is json array
+                                    JSONArray genreArry = obj.getJSONArray("genre");
+                                    ArrayList<String> genre = new ArrayList<String>();
+                                    for (int j = 0; j < genreArry.length(); j++) {
+                                        genre.add((String) genreArry.get(j));
+                                    }
+                                    restorantMenu.setGenre(genre);
+
+                                    // adding restorantMenu to menu array
+                                    restorantMenuList.add(restorantMenu);
+                                    myDatabase.insert(restorantMenu);
+
+                                } catch (JSONException e) {
+                                    e.printStackTrace();
                                 }
-                                restorantMenu.setGenre(genre);
 
-                                // adding restorantMenu to menu array
-                                restorantMenuList.add(restorantMenu);
-
-                            } catch (JSONException e) {
-                                e.printStackTrace();
                             }
 
+                            // notifying list adapter about data changes
+                            // so that it renders the list view with updated data
+                            adapter.notifyDataSetChanged();
+                            myDatabase.close();
+
                         }
+                    }, new Response.ErrorListener() {
+                @Override
+                public void onErrorResponse(VolleyError error) {
+                    VolleyLog.d(TAG, "Error: " + error.getMessage());
+                    hidePDialog();
 
-                        // notifying list adapter about data changes
-                        // so that it renders the list view with updated data
-                        adapter.notifyDataSetChanged();
+                }
+            });
 
-                    }
-                }, new Response.ErrorListener() {
-            @Override
-            public void onErrorResponse(VolleyError error) {
-                VolleyLog.d(TAG, "Error: " + error.getMessage());
-                hidePDialog();
-
+            // Adding request to request queue
+            AppController.getInstance().addToRequestQueue(movieReq);
+        }
+        //NEMA INTERNET ZEMI OD BAZA
+        else{
+            hidePDialog();
+            Toast.makeText(MainActivity.this,"No INTERNET !",Toast.LENGTH_LONG).show();
+            MyMenuItemsDAO myDatabase = new MyMenuItemsDAO(MainActivity.this);
+            myDatabase.open();
+            List<RestorantMenu> lista  = myDatabase.getAllItems();
+            for(RestorantMenu item : lista ){
+                restorantMenuList.add(item);
             }
-        });
-
-        // Adding request to request queue
-        AppController.getInstance().addToRequestQueue(movieReq);
+            myDatabase.close();
+            adapter.notifyDataSetChanged();
+        }
 
     }
     private void hidePDialog() {

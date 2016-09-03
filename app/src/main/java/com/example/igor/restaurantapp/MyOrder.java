@@ -63,8 +63,9 @@ public class MyOrder extends AppCompatActivity {
             boolean flag = true;
 
             for(RestorantMenu meni : result){
-                if(meni.getId() == meniObj.getId())
-                    flag=false;
+                if(meni.getId() == meniObj.getId()) {
+                    flag = false;
+                }
             }
 
             if(flag){
