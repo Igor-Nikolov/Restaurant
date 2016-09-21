@@ -188,7 +188,7 @@ public class NewInfo extends AppCompatActivity
 
         //noinspection SimplifiableIfStatement
         if (id == R.id.home) {
-            Intent i = new Intent(getApplicationContext(),SelectMenu.class);
+            Intent i = new Intent(getApplicationContext(),Home.class);
             startActivity(i);
         }else if (id == R.id.myOrderMenuItem) {
             Intent i = new Intent(getApplicationContext(),MyOrder.class);
