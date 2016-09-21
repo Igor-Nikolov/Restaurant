@@ -1,6 +1,5 @@
 package com.example.igor.restaurantapp;
 
-import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.NavigationView;
@@ -13,19 +12,16 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
-import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.example.igor.restaurantapp.Model.RestorantMenu;
-import com.example.igor.restaurantapp.Service.MyService;
 import com.squareup.picasso.Picasso;
 
 /**
  * Created by Igor on 08-Aug-16.
  */
-public class MeniItemDetail extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
+public class NewInfoItemDetail extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
     RestorantMenu meniObj;
 
     ImageView meniImg;
@@ -42,19 +38,9 @@ public class MeniItemDetail extends AppCompatActivity implements NavigationView.
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_restorantmeni_detail);
+        setContentView(R.layout.newinfo_detail_layout);
         ActionBar actionBar = getSupportActionBar();
         actionBar.setDisplayHomeAsUpEnabled(true);
-        ImageButton tipimg = (ImageButton)findViewById(R.id.imageButton8);
-
-
-        tipimg.setOnClickListener(new View.OnClickListener()
-        {
-            public void onClick(View v)
-            {
-                Toast.makeText(MeniItemDetail.this, "Thank you for Tiping", Toast.LENGTH_LONG).show();
-            }
-        });
         doInject();
 
 
@@ -68,19 +54,11 @@ public class MeniItemDetail extends AppCompatActivity implements NavigationView.
         //imageLoader = Picasso.with(MeniItemDetail.this);
         meniImg = (ImageView) findViewById(R.id.meniImg);
         meniName = (TextView) findViewById(R.id.meni_name);
-        imageLoader = Picasso.with(MeniItemDetail.this);
+        imageLoader = Picasso.with(NewInfoItemDetail.this);
         meniPrice = (TextView) findViewById(R.id.meni_time);
         add_to_order = (Button) findViewById(R.id.add_to_order);
         //bookDesctiption = (TextView) findViewById(R.id.book_description);
-        // addFavorite = (Button) findViewById(R.id.add_favorite);
-        // removeFavorite = (Button) findViewById(R.id.remove_favorite);
-        // favBookTask = new FavBookTask(MeniItemDetail.this);
-        //getFavBookStateTask = new GetFavBookStateTask(MeniItemDetail.this);
 
-        //imageLoader.load(getResources().getString(R.string.book_image_real) + bookObj.getId()).
-        //        placeholder(R.mipmap.ic_person_black_24dp)
-        //        .error(R.mipmap.ic_power_settings_new_black_24dp)
-        //        .into(bookImg);
 
         imageLoader.load(meniObj.getThumbnailUrl())
                 .placeholder(R.drawable.ic_menu_gallery)
@@ -88,21 +66,9 @@ public class MeniItemDetail extends AppCompatActivity implements NavigationView.
                 .fit()
                 .into(meniImg);
         meniName.setText(meniObj.getTitle());
-        meniPrice.setText("Price: " + meniObj.getPrice().toString()+"$");
+        meniPrice.setText("Price: " + meniObj.getPrice().toString());
         setTitle(meniObj.getTitle());
-        // bookDesctiption.setText(bookObj.getDescription());
-        //  addFavorite.setVisibility(View.GONE);
-        //   removeFavorite.setVisibility(View.GONE);
-        // setFavBookBtn();
-        add_to_order.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
 
-                Intent i = new Intent(getApplicationContext(), MyOrder.class);
-                i.putExtra("meniObj", meniObj);
-                startActivity(i);
-            }
-        });
 
     }
 
@@ -151,7 +117,7 @@ public class MeniItemDetail extends AppCompatActivity implements NavigationView.
 
     }
 
-    public boolean onCreateOptionsMenu(android.view.Menu menu) {
+    public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
         getMenuInflater().inflate(R.menu.activity_itemdetail_menu, menu);
 
@@ -214,7 +180,7 @@ public class MeniItemDetail extends AppCompatActivity implements NavigationView.
     @Override
     public void onBackPressed() {
         //super.onBackPressed();
-        MeniItemDetail.this.finish();
+        NewInfoItemDetail.this.finish();
     }
 
 }

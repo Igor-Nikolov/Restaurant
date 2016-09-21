@@ -7,8 +7,10 @@ import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.Button;
 import android.widget.ListView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.example.igor.restaurantapp.Adapter.CustomListAdapter;
 import com.example.igor.restaurantapp.Database.MyOrderDAO;
@@ -37,6 +39,22 @@ public class MyOrder extends AppCompatActivity {
 
         ActionBar actionBar =  getSupportActionBar();
         actionBar.setDisplayHomeAsUpEnabled(true);
+
+        Button btn=(Button)findViewById(R.id.order);
+        btn.setOnClickListener(new View.OnClickListener()
+        {
+            public void onClick(View v)
+            {
+                Toast.makeText(MyOrder.this, "Your order has been sent. Thank you!", Toast.LENGTH_LONG).show();
+                Intent myIntent = new Intent(getApplicationContext() , SelectMenu.class);
+                startActivity(myIntent);
+                MyOrderDAO myDatabase = new MyOrderDAO(MyOrder.this);
+                myDatabase.open();
+                myDatabase.deleteAll();
+                adapter.clear();
+                myDatabase.close();
+            }
+        });
 
         FloatingActionButton deleteMyOrderList = (FloatingActionButton) findViewById(R.id.deleteMyOrderList);
         deleteMyOrderList.setOnClickListener(new View.OnClickListener() {
@@ -140,7 +158,7 @@ public class MyOrder extends AppCompatActivity {
 
         //noinspection SimplifiableIfStatement
         if (id == R.id.home) {
-            Intent i = new Intent(getApplicationContext(),MainActivity.class);
+            Intent i = new Intent(getApplicationContext(),SelectMenu.class);
             startActivity(i);
         }else if (id == R.id.myOrderMenuItem) {
             Intent i = new Intent(getApplicationContext(),MyOrder.class);
