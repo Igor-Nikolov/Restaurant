@@ -43,7 +43,7 @@
         <activity android:name=".ContactForm" />
         <activity android:name=".NewInfo"
             android:theme="@style/AppTheme.NoActionBar"
-            android:parentActivityName="com.example.igor.restaurantapp.SelectMenu"/>
+            android:parentActivityName="com.example.igor.restaurantapp.Home"/>
         <activity android:name=".NewInfoItemDetail"
             android:theme="@style/AppTheme" />
         <activity
